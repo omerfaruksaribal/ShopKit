@@ -1,0 +1,110 @@
+// This is your Prisma schema file.
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────
+
+enum Role {
+  CUSTOMER
+  SELLER
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  CANCELLED
+}
+
+enum TransactionStatus {
+  SUCCESS
+  FAILED
+}
+
+// ─── Models ──────────────────────────────────────────────
+
+model User {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String   @unique
+  password_hash String
+  role          Role
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  // Relations
+  products Product[]
+  orders   Order[]
+
+  @@map("users")
+}
+
+model Product {
+  id             String   @id @default(uuid()) @db.Uuid
+  seller_id      String   @db.Uuid
+  name           String
+  description    String?
+  price          Decimal  @db.Decimal(10, 2)
+  stock_quantity Int      @default(0)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  // Relations
+  seller     User        @relation(fields: [seller_id], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id           String      @id @default(uuid()) @db.Uuid
+  customer_id  String      @db.Uuid
+  total_amount Decimal     @db.Decimal(10, 2)
+  status       OrderStatus @default(PENDING)
+  tax_rate     Decimal     @default(0) @db.Decimal(5, 4)
+  invoice_url  String?
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+
+  // Relations
+  customer     User          @relation(fields: [customer_id], references: [id], onDelete: Cascade)
+  items        OrderItem[]
+  transactions Transaction[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String  @id @default(uuid()) @db.Uuid
+  order_id   String  @db.Uuid
+  product_id String  @db.Uuid
+  quantity   Int
+  unit_price Decimal @db.Decimal(10, 2) // Snapshot of product price at purchase time
+
+  // Relations
+  order   Order   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id])
+
+  @@map("order_items")
+}
+
+model Transaction {
+  id       String            @id @default(uuid()) @db.Uuid
+  order_id String            @db.Uuid
+  amount   Decimal           @db.Decimal(10, 2)
+  status   TransactionStatus
+  provider String            @default("DummyPay")
+  created_at DateTime        @default(now())
+
+  // Relations
+  order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
