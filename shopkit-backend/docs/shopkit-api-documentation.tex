@@ -308,6 +308,24 @@ Get a single product by ID. \textbf{Public}.
   \bottomrule
 \end{tabularx}
 
+\subsubsection{Response \texttt{200 OK}}
+\begin{lstlisting}
+{
+  "success": true,
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "seller_id": "uuid",
+    "name": "Widget Pro",
+    "description": "Premium widget",
+    "price": "49.99",
+    "stock_quantity": 50,
+    "created_at": "2026-02-26T08:26:12.000Z",
+    "updated_at": "2026-02-26T08:26:12.000Z",
+    "seller": { "id": "uuid", "email": "seller@ex.com" }
+  }
+}
+\end{lstlisting}
+
 \subsubsection{Error Responses}
 \begin{tabularx}{\textwidth}{@{}lX@{}}
   \toprule
@@ -370,6 +388,23 @@ Only the seller who created the product can update it. All fields are optional.
 {
   "name": "Widget Pro v2",
   "price": 59.99
+}
+\end{lstlisting}
+
+\subsubsection{Response \texttt{200 OK}}
+\begin{lstlisting}
+{
+  "success": true,
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "seller_id": "uuid",
+    "name": "Widget Pro v2",
+    "description": "Premium widget",
+    "price": "59.99",
+    "stock_quantity": 50,
+    "created_at": "2026-02-26T08:26:12.000Z",
+    "updated_at": "2026-02-27T09:00:00.000Z"
+  }
 }
 \end{lstlisting}
 
