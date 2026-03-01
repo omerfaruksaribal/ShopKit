@@ -1,7 +1,6 @@
-//
-//  LoginRequest.swift
-//  shopkit-ios
-//
-//  Created by Ömerfaruk Saribal on 27.02.2026.
-//
+import Foundation
 
+struct LoginRequest: Codable {
+    let email: String
+    let password: String
+}

@@ -1,7 +1,7 @@
-//
-//  RegisterRequest.swift
-//  shopkit-ios
-//
-//  Created by Ömerfaruk Saribal on 27.02.2026.
-//
+import Foundation
 
+struct RegisterRequest: Codable {
+    let email: String
+    let password: String
+    let role: String
+}

@@ -1,7 +1,7 @@
-//
-//  APIResponse.swift
-//  shopkit-ios
-//
-//  Created by Ömerfaruk Saribal on 26.02.2026.
-//
+import Foundation
 
+struct APIResponse<T: Codable>: Codable {
+    let success: Bool
+    let data: T?
+    let message: String?
+}

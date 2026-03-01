@@ -1,7 +1,8 @@
-//
-//  User.swift
-//  shopkit-ios
-//
-//  Created by Ömerfaruk Saribal on 26.02.2026.
-//
+import Foundation
 
+struct UserModel: Codable {
+    let id: String
+    let email: String
+    let role: String
+    let token: String?
+}

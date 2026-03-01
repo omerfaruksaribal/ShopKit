@@ -1,7 +1,8 @@
-//
-//  UpdateProductRequest.swift
-//  shopkit-ios
-//
-//  Created by Ömerfaruk Saribal on 26.02.2026.
-//
+import Foundation
 
+struct UpdateProductRequest: Codable {
+    let name: String?
+    let description: String?
+    let price: Double?
+    let stock_quantity: Int?
+}
